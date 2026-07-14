@@ -24,8 +24,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		if _since_release >= 0.0:
 			_since_release += delta
-	if RespawnPolicy.should_respawn(_held, _since_release, global_position.y, linear_velocity.length()):
+	if RespawnPolicy.should_respawn(_held, _since_release, global_position.y, effective_speed()):
 		respawn()
+
+
+## Sleeping bodies freeze linear_velocity at the value they slept at, which
+## can sit above RespawnPolicy.REST_SPEED forever - treat sleep as stopped.
+func effective_speed() -> float:
+	return 0.0 if sleeping else linear_velocity.length()
 
 
 func pick_up(by: Node3D) -> void:

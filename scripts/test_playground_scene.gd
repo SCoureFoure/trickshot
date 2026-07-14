@@ -71,6 +71,25 @@ func _run() -> void:
 	target.target_hit.emit(25)
 	_check("score_after_second_hit", score_label.text == "35")
 
+	_check("has_reset_method", main.has_method("reset_balls"))
+
+	var b: Node3D = main.get_node("Ball1")
+	var before: Vector3 = b.global_transform.origin
+	b.global_position = Vector3(3, 3, 3)
+	main.reset_balls()
+	_check(
+		"reset_restores_ball",
+		b.global_transform.origin.distance_to(before) < 0.001
+	)
+
+	var left_controller = main.get_node("XROrigin3D/LeftController")
+	var right_controller = main.get_node("XROrigin3D/RightController")
+	_check(
+		"controller_buttons_wired",
+		left_controller.get_signal_connection_list("button_pressed").size() >= 1
+		and right_controller.get_signal_connection_list("button_pressed").size() >= 1
+	)
+
 	var movement_provider_path := _find_global_class_path("XRToolsMovementProvider")
 	var has_movement_provider := false
 	if movement_provider_path != "":

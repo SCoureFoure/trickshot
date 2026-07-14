@@ -46,6 +46,17 @@ func _run() -> void:
 	# keeps the ball colliding with floor/rack/target.
 	_check("on_pickable_layer", ball.collision_layer == 5)
 
+	ball.linear_velocity = Vector3(2, 0, 0)
+	ball.sleeping = true
+	_check("effective_speed_zero_when_sleeping", ball.effective_speed() == 0.0)
+
+	ball.sleeping = false
+	ball.linear_velocity = Vector3(2, 0, 0)
+	_check(
+		"effective_speed_tracks_velocity_awake",
+		abs(ball.effective_speed() - 2.0) < 0.001
+	)
+
 	_check(
 		"empty_sampler_falls_back",
 		ball.release_linear_velocity(Vector3(9, 9, 9)) == Vector3(9, 9, 9)
