@@ -21,10 +21,11 @@ Godot exe on this machine: `C:\Users\SCora\Desktop\Godot_v4.7-stable_win64.exe`
 (referred to as `godot` below).
 
 - Run game: `godot --path .`
-- Re-import after adding class_name scripts: `godot --headless --path . --import`
+- Re-import after adding class_name scripts: `godot --headless --xr-mode off --path . --import`
   (new `class_name` registrations are not visible to tests until re-import —
   same gotcha applies here)
-- Run one test: `godot --headless --path . --script res://scripts/test_throw_sampler.gd`
+- Run one test: `godot --headless --xr-mode off --path . --script res://scripts/test_throw_sampler.gd`
+- --xr-mode off is required for all headless runs: a system OpenXR runtime (Quest Link) is active on this machine and headless OpenXR init segfaults without it.
 - Tests print `ALL_PASS` or `FAILURES=n` on the last line.
 
 ## VR constraints (do not break)

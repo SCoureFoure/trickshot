@@ -4,6 +4,7 @@ extends Node3D
 ## to a flat desktop preview so the scene stays runnable without a headset.
 
 var xr_interface: XRInterface
+var _score := Scoring.new()
 
 
 func _ready() -> void:
@@ -14,3 +15,9 @@ func _ready() -> void:
 		get_viewport().use_xr = true
 	else:
 		print("OpenXR not initialized - desktop preview mode")
+
+	$Target.target_hit.connect(_on_target_hit)
+
+
+func _on_target_hit(points: int) -> void:
+	$ScoreLabel.text = str(_score.register(points))

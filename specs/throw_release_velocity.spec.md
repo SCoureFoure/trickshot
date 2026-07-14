@@ -35,7 +35,7 @@ controller positions, not instantaneous frame delta which is jittery.
 `scripts/test_throw_sampler.gd` — run:
 
 ```
-godot --headless --path . --script res://scripts/test_throw_sampler.gd
+godot --headless --xr-mode off --path . --script res://scripts/test_throw_sampler.gd
 ```
 
 Prints `ALL_PASS` on success or `FAILURES=n` on failure.
