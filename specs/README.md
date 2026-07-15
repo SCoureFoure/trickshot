@@ -18,3 +18,8 @@ more.
 
 - `trickshot_playground.spec.md` — game design (not fully machine-testable)
 - `throw_release_velocity.spec.md` ↔ `scripts/test_throw_sampler.gd`
+- `ball_types.spec.md` ↔ `scripts/test_ball_types.gd`
+- `spawn_budget.spec.md` ↔ `scripts/test_spawn_budget.gd`
+- `bow_draw.spec.md` ↔ `scripts/test_bow_draw.gd`
+- `arrow.spec.md` ↔ `scripts/test_arrow_scene.gd`
+- `bow.spec.md` ↔ `scripts/test_bow_scene.gd`

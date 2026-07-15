@@ -1,44 +1,33 @@
 # Trickshot
 
-A Godot 4.7 VR trickshot playground for Meta Quest 2. Stand in place, grab balls off a rack, and throw them at targets for points. Built comfort-first by design: room-scale only, no artificial smooth locomotion (hard rule—owner gets motion sick).
+Godot 4.7 VR trickshot playground for Meta Quest 2 (OpenXR, gl_compatibility renderer, 72 Hz physics). Room-scale only, zero artificial locomotion—comfort-first design for standing or seated play within reach.
 
-## Current Features
+## Features
 
-- 3 grabbable balls on a rack (godot-xr-tools pickable, grip to grab)
-- Throw release velocity from windowed controller-position averaging (smooths tracking jitter)
-- Ring target with 25/10/5 points (bullseye to outer ring), in-world floating score display, ring flash and beep on hit
-- Balls auto-respawn to the rack when fallen out of world or at rest 5 seconds after a throw
-- B/Y button on either controller resets all balls to the rack
-- Low-poly hand models on both controllers
+- Four ball types (bouncy, beach, heavy, baseball) with distinct physics defined in `scripts/ball_types.gd`
+- Throw system using release-velocity sampling via `ThrowSampler` to smooth tracking jitter
+- Scoring target with ring-based points, hit flash and beep; scores balls and arrows
+- Poke-button panel: RESET button (full scene reset) and spawn buttons for each ball type; buttons respond to finger poke or thrown ball impacts, with spawn cap via `SpawnBudget`
+- Bounce wall on left side for ricochet shots
+- Collision hands with physical presence in world and poke fingers (no pickable-shoving)
+- Bow and arrow: two-hand draw (grip + string), KayKit CC0 models, procedural two-segment string with visible bend, nocked-arrow visual, draw dead zone, arrows stick on impact and despawn after 10 seconds
+- Medieval archery-range environment (KayKit Hexagon pack, CC0) in `scenes/range_environment.tscn`
+- Anti-tunneling via thick static colliders (CCD off by design—kills bounce)
 
-## Running (PCVR via Quest Link)
+## Running
 
-1. Godot 4.7 (standard build), Meta Quest Link app installed, headset connected via Link cable or Air Link
-2. Set "Meta Horizon Link" as the active OpenXR runtime in the Link desktop app settings
-3. With the Link session active: `godot --path .`
-4. Without a headset the game falls back to a flat desktop preview
+1. Quest Link session active (Meta Horizon Link as OpenXR runtime)
+2. `godot --path .` to play; headless tests need `--headless --xr-mode off`
+3. After adding `class_name` scripts: `godot --headless --xr-mode off --path . --import`
 
 ## Tests
 
-Headless tests cover pure-logic modules and scenes; each has a paired spec in `specs/`.
+Headless tests paired 1:1 with specs in `specs/`. Run one test: `godot --headless --xr-mode off --path . --script res://scripts/test_throw_sampler.gd`. Tests print `ALL_PASS` or `FAILURES=n`. Start at `specs/README.md` for system overview.
 
-- Run one test: `godot --headless --xr-mode off --path . --script res://scripts/test_throw_sampler.gd`
-- `--xr-mode off` is mandatory for headless (required when an OpenXR runtime like Quest Link is active—otherwise it segfaults)
-- After adding `class_name` scripts, re-import first: `godot --headless --xr-mode off --path . --import`
-- Tests print `ALL_PASS` or `FAILURES=n` on the last line
-- Start at `specs/README.md` for spec format and system overview
+## Architecture
 
-## Project Layout
+Pure-logic RefCounted modules (scripts with `class_name`, no nodes) separated from scene layer. Every rule has a spec and paired headless test.
 
-- `scripts/` — game scripts, pure-logic modules (RefCounted, node-free), and their headless tests
-- `scenes/` — main playground, ball, and target scenes
-- `specs/` — one spec per system, paired 1:1 with headless tests
-- `addons/godot-xr-tools/` — XR interaction toolkit (grab, throw, hand models)
+## Assets
 
-## Quest 2 Constraints
-
-gl_compatibility renderer, 72 Hz physics tick rate, no realtime shadows, maximum 24 active rigid bodies.
-
-## Roadmap
-
-More throwable types (different weights and sizes, frisbee with glide and curve physics), Android sideload build for standalone Quest, bow and arrow (stretch goal).
+`assets/kaykit/` and `assets/kaykit_hex/` — KayKit packs by Kay Lousberg, CC0 with license files included.

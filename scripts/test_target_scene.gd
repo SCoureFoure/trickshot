@@ -33,6 +33,31 @@ func _run() -> void:
 	_check("miss", target.points_for_local_hit(Vector3(0.5, 0, 0)) == 0)
 	_check("z_ignored", target.points_for_local_hit(Vector3(0.2, 0, 0.9)) == 10)
 
+	# arrow_body_scores: a body in the "arrows" group entering the face scores
+	var arrow_body := Node3D.new()
+	arrow_body.add_to_group("arrows")
+	root.add_child(arrow_body)
+	arrow_body.global_position = target.global_position + Vector3(0.1, 0.1, 0)
+	var arrow_hits: Array = []
+	var arrow_cb := func(points: int) -> void: arrow_hits.append(points)
+	target.target_hit.connect(arrow_cb)
+	target._on_face_body_entered(arrow_body)
+	_check("arrow_body_scores", arrow_hits.size() == 1 and arrow_hits[0] > 0)
+	target.target_hit.disconnect(arrow_cb)
+	arrow_body.queue_free()
+
+	# ungrouped_body_ignored: a body in neither group must not score
+	var ungrouped_body := Node3D.new()
+	root.add_child(ungrouped_body)
+	ungrouped_body.global_position = target.global_position + Vector3(0.1, 0.1, 0)
+	var ungrouped_hits: Array = []
+	var ungrouped_cb := func(points: int) -> void: ungrouped_hits.append(points)
+	target.target_hit.connect(ungrouped_cb)
+	target._on_face_body_entered(ungrouped_body)
+	_check("ungrouped_body_ignored", ungrouped_hits.is_empty())
+	target.target_hit.disconnect(ungrouped_cb)
+	ungrouped_body.queue_free()
+
 	var face: Node = target.get_node("Face")
 	_check("face_is_area3d", face is Area3D)
 	var hit_sound: Node = target.get_node("HitSound")

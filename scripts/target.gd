@@ -1,9 +1,9 @@
 class_name Target
 extends Node3D
 
-## A hittable target: three concentric rings on a backing board. Balls that
-## enter the Face area score points by ring distance from the target centre,
-## trigger a brief emission flash on the rings, and play a short beep.
+## A hittable target: three concentric rings on a backing board. Balls and
+## arrows that enter the Face area score points by ring distance from the
+## target centre, trigger a brief emission flash on the rings, and play a short beep.
 
 signal target_hit(points: int)
 
@@ -55,7 +55,7 @@ func points_for_local_hit(local_pos: Vector3) -> int:
 
 
 func _on_face_body_entered(body: Node3D) -> void:
-	if not body.is_in_group("balls"):
+	if not (body.is_in_group("balls") or body.is_in_group("arrows")):
 		return
 	var id := body.get_instance_id()
 	if _last_hit.has(id) and _time - _last_hit[id] < HIT_COOLDOWN:

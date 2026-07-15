@@ -42,6 +42,10 @@ func _run() -> void:
 
 	_check("mass_is_half_kg", ball.mass == 0.5)
 
+	# CCD must stay OFF: Godot's ray-based CCD eats bounce on fast impacts.
+	# Tunneling is prevented by thick static colliders in main.tscn instead.
+	_check("no_ccd", ball.continuous_cd == false)
+
 	# Layer 3 is what XRToolsFunctionPickup's grab mask looks for; layer 1
 	# keeps the ball colliding with floor/rack/target.
 	_check("on_pickable_layer", ball.collision_layer == 5)
