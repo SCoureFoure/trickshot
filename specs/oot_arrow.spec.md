@@ -50,16 +50,16 @@ differing only in mesh and fitted collision capsule.
    default orientation; within 0.001 m).
 7b. `tip_length_matches_capsule`: `tip_length == 0.55`.
 7c. `fired_arrow_sticks_in_wall` / `stuck_at_wall_face`: an arrow fired at
-    15 m/s into a StaticBody3D box wall 3 m downrange ends frozen at the wall
-    face within 300 physics frames (real simulated flight — the regression
-    membrane for the bounce bug).
+	15 m/s into a StaticBody3D box wall 3 m downrange ends frozen at the wall
+	face within 300 physics frames (real simulated flight — the regression
+	membrane for the bounce bug).
 8. `stuck_arrow_expires`: After stick and calling `_physics_process(11.0)`, the
    arrow is queued for deletion.
 9. `flight_timeout_expires`: After firing with speed 5.0 and calling
    `_physics_process(31.0)`, the arrow is queued for deletion.
 10. `void_fall_expires`: After firing with speed 5.0, setting global_position
-    to Vector3(0, -10, 0), and calling `_physics_process(0.1)`, the arrow is
-    queued for deletion.
+	to Vector3(0, -10, 0), and calling `_physics_process(0.1)`, the arrow is
+	queued for deletion.
 
 ## Test
 

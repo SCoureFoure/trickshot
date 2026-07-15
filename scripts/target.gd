@@ -9,6 +9,11 @@ signal target_hit(points: int)
 
 const HIT_COOLDOWN := 1.0
 
+## Local-space center of the scoring rings. Stays ZERO for targets whose origin
+## is the disc center; set in the scene when the origin is elsewhere (e.g. the
+## archery target's origin is at the stand base for easy ground placement).
+@export var bull_center: Vector3 = Vector3.ZERO
+
 var _last_hit := {}  # instance id -> _time
 var _time := 0.0
 
@@ -17,8 +22,11 @@ var _time := 0.0
 # NOTIFICATION_READY, whose propagation timing relative to a caller's
 # immediately-following add_child() is not guaranteed the same way headless
 # under the dummy renderer/xr-off harness). Build the hit sound here so
-# `$HitSound.stream` is populated as soon as the node is in the tree.
+# `$HitSound.stream` is populated as soon as the node is in the tree, unless
+# the scene already assigned a stream, in which case building is skipped.
 func _enter_tree() -> void:
+	if $HitSound.stream != null:
+		return
 	var stream := AudioStreamWAV.new()
 	stream.format = AudioStreamWAV.FORMAT_16_BITS
 	stream.mix_rate = 22050
@@ -51,7 +59,8 @@ func _physics_process(delta: float) -> void:
 
 
 func points_for_local_hit(local_pos: Vector3) -> int:
-	return Scoring.points_for_ring_distance(Vector2(local_pos.x, local_pos.y).length())
+	var rel := local_pos - bull_center
+	return Scoring.points_for_ring_distance(Vector2(rel.x, rel.y).length())
 
 
 func _on_face_body_entered(body: Node3D) -> void:

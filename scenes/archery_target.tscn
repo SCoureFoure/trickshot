@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bdq4xpex05r62" path="res://scripts/target.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://cxf4kb1sxqpn7" path="res://assets/kaykit_hex/target.gltf" id="2"]
+[ext_resource type="AudioStreamMP3" path="res://assets/audio/arrow_wood_impact.mp3" id="3"]
 
 [sub_resource type="BoxShape3D" id="backing_shape"]
 custom_solver_bias = 0.5
@@ -12,6 +13,7 @@ size = Vector3(1.4126587, 1.4075928, 0.08736328)
 
 [node name="ArcheryTarget" type="Node3D" unique_id=699150256]
 script = ExtResource("1")
+bull_center = Vector3(-0.005, 0.613, -0.171)
 
 [node name="Mesh" parent="." unique_id=814251792 instance=ExtResource("2")]
 transform = Transform3D(6.5, 0, 0, 0, 6.5, 0, 0, 0, 6.5, 0, -0.5772, -0.2737)
@@ -32,3 +34,4 @@ shape = SubResource("face_shape")
 [node name="Rings" type="Node3D" parent="." unique_id=1238751546]
 
 [node name="HitSound" type="AudioStreamPlayer3D" parent="." unique_id=1864683712]
+stream = ExtResource("3")
