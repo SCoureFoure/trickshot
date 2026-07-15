@@ -46,6 +46,14 @@ static module + `test_*.gd` + spec in `specs/`. XR interaction (grab/throw/
 teleport) comes from `addons/godot-xr-tools` — prefer wiring its nodes over
 reimplementing.
 
+## Asset import
+
+New 3D models get collision via the `/import-asset` skill
+(`.claude/skills/import-asset/SKILL.md`): pick shape strategy per object kind,
+generate collision in the `.gltf.import` `_subresources` block, reimport
+headless, verify with `scripts/dump_scene_tree.gd`. Don't hand-place sibling
+BoxShape3D bodies for scenery anymore.
+
 ## Specs
 
 `specs/` holds one `<feature>.spec.md` per system paired 1:1 with a headless

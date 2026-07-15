@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/tree_drag.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit_hex/tree_single_B.gltf" id="2"]
+
+[node name="TreeB" type="Node3D"]
+script = ExtResource("1")
+trunk_radius = 0.095
+canopy_radius = 0.38
+canopy_bottom_y = 0.08
+canopy_top_y = 1.12
+
+[node name="Visual" parent="." instance=ExtResource("2")]
+
+[node name="Trunk" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trunk"]
+
+[node name="Canopy" type="Area3D" parent="."]
+collision_mask = 5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Canopy"]
