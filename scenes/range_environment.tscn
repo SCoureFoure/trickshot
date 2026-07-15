@@ -1,20 +1,20 @@
-[gd_scene load_steps=28 format=3]
+[gd_scene format=3 uid="uid://bfdqqfka714l5"]
 
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/building_archeryrange_red.gltf" id="1"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/tent.gltf" id="2"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/weaponrack.gltf" id="3"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/bucket_arrows.gltf" id="4"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/barrel.gltf" id="5"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/sack.gltf" id="6"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/tree_single_A.gltf" id="8"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/tree_single_B.gltf" id="9"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/rock_single_C.gltf" id="10"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/wall_straight.gltf" id="11"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/mountain_A.gltf" id="12"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/mountain_B.gltf" id="13"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/mountain_C.gltf" id="14"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/hills_A.gltf" id="15"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/hills_B.gltf" id="16"]
+[ext_resource type="PackedScene" uid="uid://c1utolgmflsuu" path="res://assets/kaykit_hex/building_archeryrange_red.gltf" id="1"]
+[ext_resource type="PackedScene" uid="uid://mm4mhfutichb" path="res://assets/kaykit_hex/tent.gltf" id="2"]
+[ext_resource type="PackedScene" uid="uid://chvco10ayrcn3" path="res://assets/kaykit_hex/weaponrack.gltf" id="3"]
+[ext_resource type="PackedScene" uid="uid://cjs5sirl8jfj5" path="res://assets/kaykit_hex/bucket_arrows.gltf" id="4"]
+[ext_resource type="PackedScene" uid="uid://bon1nmch24gmo" path="res://assets/kaykit_hex/barrel.gltf" id="5"]
+[ext_resource type="PackedScene" uid="uid://b3eqw7y78rqj0" path="res://assets/kaykit_hex/sack.gltf" id="6"]
+[ext_resource type="PackedScene" uid="uid://fuiuci3gu4tu" path="res://assets/kaykit_hex/tree_single_A.gltf" id="8"]
+[ext_resource type="PackedScene" uid="uid://bmqa6bnkcjddt" path="res://assets/kaykit_hex/tree_single_B.gltf" id="9"]
+[ext_resource type="PackedScene" uid="uid://bx5cb3gwurc4t" path="res://assets/kaykit_hex/rock_single_C.gltf" id="10"]
+[ext_resource type="PackedScene" uid="uid://dxjbbbht7sokf" path="res://assets/kaykit_hex/wall_straight.gltf" id="11"]
+[ext_resource type="PackedScene" uid="uid://c6jardxhgv3g5" path="res://assets/kaykit_hex/mountain_A.gltf" id="12"]
+[ext_resource type="PackedScene" uid="uid://bmu4oeiv3xttk" path="res://assets/kaykit_hex/mountain_B.gltf" id="13"]
+[ext_resource type="PackedScene" uid="uid://d27y2qxfmpd1g" path="res://assets/kaykit_hex/mountain_C.gltf" id="14"]
+[ext_resource type="PackedScene" uid="uid://djojgxe07e34v" path="res://assets/kaykit_hex/hills_A.gltf" id="15"]
+[ext_resource type="PackedScene" uid="uid://b2wui3ck017v5" path="res://assets/kaykit_hex/hills_B.gltf" id="16"]
 
 [sub_resource type="BoxShape3D" id="lodge_box"]
 size = Vector3(6.68, 7.17, 6.2)
@@ -23,7 +23,7 @@ size = Vector3(6.68, 7.17, 6.2)
 size = Vector3(2.58, 2.58, 2.58)
 
 [sub_resource type="BoxShape3D" id="rack_box"]
-size = Vector3(1.0, 1.2, 0.65)
+size = Vector3(1, 1.2, 0.65)
 
 [sub_resource type="BoxShape3D" id="bucket_box"]
 size = Vector3(0.56, 0.93, 0.57)
@@ -52,234 +52,234 @@ size = Vector3(1.03, 0.58, 1.03)
 [sub_resource type="BoxShape3D" id="wall_box"]
 size = Vector3(6, 3.3, 2.4)
 
-[node name="RangeEnvironment" type="Node3D"]
+[node name="RangeEnvironment" type="Node3D" unique_id=1510951607]
 
-[node name="ArcheryLodge" parent="." instance=ExtResource("1")]
-transform = Transform3D(3.4640, 0, -2.0000, 0, 4, 0, 2.0000, 0, 3.4640, 6, 0.1, -6)
+[node name="ArcheryLodge" parent="." unique_id=762666889 instance=ExtResource("1")]
+transform = Transform3D(3.464, 0, -2, 0, 4, 0, 2, 0, 3.464, 6, 0.1, -6)
 
-[node name="ArcheryLodgeBody" type="StaticBody3D" parent="."]
+[node name="ArcheryLodgeBody" type="StaticBody3D" parent="." unique_id=312875239]
 transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 6, 0.1, -6)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArcheryLodgeBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArcheryLodgeBody" unique_id=1991754879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14, 3.58, -0.39)
 shape = SubResource("lodge_box")
 
-[node name="Tent" parent="." instance=ExtResource("2")]
-transform = Transform3D(4.6985, 0, 1.7100, 0, 5, 0, -1.7100, 0, 4.6985, 4.5, 0.1, -1.5)
+[node name="Tent" parent="." unique_id=206524908 instance=ExtResource("2")]
+transform = Transform3D(4.6985, 0, 1.71, 0, 5, 0, -1.71, 0, 4.6985, 4.5, 0.1, -1.5)
 
-[node name="TentBody" type="StaticBody3D" parent="."]
+[node name="TentBody" type="StaticBody3D" parent="." unique_id=1852796257]
 transform = Transform3D(0.939693, 0, 0.342, 0, 1, 0, -0.342, 0, 0.939693, 4.5, 0.1, -1.5)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TentBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TentBody" unique_id=1529465185]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.29, 0)
 shape = SubResource("tent_box")
 
-[node name="WeaponRack" parent="." instance=ExtResource("3")]
+[node name="WeaponRack" parent="." unique_id=1811550160 instance=ExtResource("3")]
 transform = Transform3D(0, 0, 5, 0, 5, 0, -5, 0, 0, -1.1, 0.1, -0.5)
 
-[node name="WeaponRackBody" type="StaticBody3D" parent="."]
+[node name="WeaponRackBody" type="StaticBody3D" parent="." unique_id=1584992232]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.1, 0.1, -0.5)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WeaponRackBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WeaponRackBody" unique_id=164257942]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -0.03)
 shape = SubResource("rack_box")
 
-[node name="ArrowBucketA" parent="." instance=ExtResource("4")]
+[node name="ArrowBucketA" parent="." unique_id=1669509856 instance=ExtResource("4")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0.9, 0.1, -0.9)
 
-[node name="ArrowBucketABody" type="StaticBody3D" parent="."]
+[node name="ArrowBucketABody" type="StaticBody3D" parent="." unique_id=559188401]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.1, -0.9)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArrowBucketABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArrowBucketABody" unique_id=1614301164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, 0)
 shape = SubResource("bucket_box")
 
-[node name="ArrowBucketB" parent="." instance=ExtResource("4")]
-transform = Transform3D(3.0640, 0, 2.5712, 0, 4, 0, -2.5712, 0, 3.0640, -0.9, 0.1, -0.15)
+[node name="ArrowBucketB" parent="." unique_id=1764875144 instance=ExtResource("4")]
+transform = Transform3D(3.064, 0, 2.5712, 0, 4, 0, -2.5712, 0, 3.064, -0.9, 0.1, -0.15)
 
-[node name="ArrowBucketBBody" type="StaticBody3D" parent="."]
+[node name="ArrowBucketBBody" type="StaticBody3D" parent="." unique_id=1901836308]
 transform = Transform3D(0.766, 0, 0.6428, 0, 1, 0, -0.6428, 0, 0.766, -0.9, 0.1, -0.15)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArrowBucketBBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArrowBucketBBody" unique_id=1685089713]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, 0)
 shape = SubResource("bucket_box")
 
-[node name="BarrelA" parent="." instance=ExtResource("5")]
+[node name="BarrelA" parent="." unique_id=350088331 instance=ExtResource("5")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 2.2, 0.1, -2)
 
-[node name="BarrelABody" type="StaticBody3D" parent="."]
+[node name="BarrelABody" type="StaticBody3D" parent="." unique_id=490368620]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.1, -2)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BarrelABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BarrelABody" unique_id=1678717168]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
 shape = SubResource("barrel_box")
 
-[node name="BarrelB" parent="." instance=ExtResource("5")]
+[node name="BarrelB" parent="." unique_id=111154257 instance=ExtResource("5")]
 transform = Transform3D(3.6252, 0, 1.6904, 0, 4, 0, -1.6904, 0, 3.6252, 2.6, 0.1, -1.6)
 
-[node name="BarrelBBody" type="StaticBody3D" parent="."]
+[node name="BarrelBBody" type="StaticBody3D" parent="." unique_id=375868708]
 transform = Transform3D(0.9063, 0, 0.4226, 0, 1, 0, -0.4226, 0, 0.9063, 2.6, 0.1, -1.6)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BarrelBBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BarrelBBody" unique_id=372874863]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0)
 shape = SubResource("barrel_box")
 
-[node name="SackA" parent="." instance=ExtResource("6")]
-transform = Transform3D(1.5000, 0, 2.5980, 0, 3, 0, -2.5980, 0, 1.5000, 2.3, 0.1, -1.2)
+[node name="SackA" parent="." unique_id=1827777440 instance=ExtResource("6")]
+transform = Transform3D(1.5, 0, 2.598, 0, 3, 0, -2.598, 0, 1.5, 2.3, 0.1, -1.2)
 
-[node name="SackABody" type="StaticBody3D" parent="."]
+[node name="SackABody" type="StaticBody3D" parent="." unique_id=53826463]
 transform = Transform3D(0.5, 0, 0.866, 0, 1, 0, -0.866, 0, 0.5, 2.3, 0.1, -1.2)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SackABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SackABody" unique_id=1797285371]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("sack_box")
 
-[node name="TreeA1" parent="." instance=ExtResource("8")]
+[node name="TreeA1" parent="." unique_id=1913393109 instance=ExtResource("8")]
 transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, -6, 0.1, -8)
 
-[node name="TreeA1Body" type="StaticBody3D" parent="."]
+[node name="TreeA1Body" type="StaticBody3D" parent="." unique_id=1074866518]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.1, -8)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA1Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA1Body" unique_id=2073303551]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.97, -0.17)
 shape = SubResource("trunk6_box")
 
-[node name="TreeA2" parent="." instance=ExtResource("8")]
-transform = Transform3D(-3.0000, 0, 5.1960, 0, 6, 0, -5.1960, 0, -3.0000, -4.5, 0.1, -10)
+[node name="TreeA2" parent="." unique_id=556565565 instance=ExtResource("8")]
+transform = Transform3D(-3, 0, 5.196, 0, 6, 0, -5.196, 0, -3, -4.5, 0.1, -10)
 
-[node name="TreeA2Body" type="StaticBody3D" parent="."]
+[node name="TreeA2Body" type="StaticBody3D" parent="." unique_id=2071753400]
 transform = Transform3D(-0.5, 0, 0.866, 0, 1, 0, -0.866, 0, -0.5, -4.5, 0.1, -10)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA2Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA2Body" unique_id=1821778737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.97, -0.17)
 shape = SubResource("trunk6_box")
 
-[node name="TreeA3" parent="." instance=ExtResource("8")]
-transform = Transform3D(-6.5779, 0, -2.3940, 0, 7, 0, 2.3940, 0, -6.5779, 7, 0.1, -12)
+[node name="TreeA3" parent="." unique_id=1586717905 instance=ExtResource("8")]
+transform = Transform3D(-6.5779, 0, -2.394, 0, 7, 0, 2.394, 0, -6.5779, 7, 0.1, -12)
 
-[node name="TreeA3Body" type="StaticBody3D" parent="."]
+[node name="TreeA3Body" type="StaticBody3D" parent="." unique_id=589037575]
 transform = Transform3D(-0.9397, 0, -0.342, 0, 1, 0, 0.342, 0, -0.9397, 7, 0.1, -12)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA3Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeA3Body" unique_id=994942660]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.47, -0.2)
 shape = SubResource("trunk7_box")
 
-[node name="TreeB1" parent="." instance=ExtResource("9")]
+[node name="TreeB1" parent="." unique_id=390144818 instance=ExtResource("9")]
 transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, -7, 0.1, -2)
 
-[node name="TreeB1Body" type="StaticBody3D" parent="."]
+[node name="TreeB1Body" type="StaticBody3D" parent="." unique_id=1588666833]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0.1, -2)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeB1Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeB1Body" unique_id=1174695766]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.04, 0)
 shape = SubResource("trunkb_box")
 
-[node name="TreeB2" parent="." instance=ExtResource("9")]
+[node name="TreeB2" parent="." unique_id=860931880 instance=ExtResource("9")]
 transform = Transform3D(1.0416, 0, 5.9088, 0, 6, 0, -5.9088, 0, 1.0416, 8, 0.1, -4)
 
-[node name="TreeB2Body" type="StaticBody3D" parent="."]
+[node name="TreeB2Body" type="StaticBody3D" parent="." unique_id=680923903]
 transform = Transform3D(0.1736, 0, 0.9848, 0, 1, 0, -0.9848, 0, 0.1736, 8, 0.1, -4)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeB2Body"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TreeB2Body" unique_id=671780652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.04, 0)
 shape = SubResource("trunkb_box")
 
-[node name="RockA" parent="." instance=ExtResource("10")]
+[node name="RockA" parent="." unique_id=682960546 instance=ExtResource("10")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -4, 0.1, -3)
 
-[node name="RockABody" type="StaticBody3D" parent="."]
+[node name="RockABody" type="StaticBody3D" parent="." unique_id=1307809523]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.1, -3)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RockABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RockABody" unique_id=588380646]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07, 0.49, -0.05)
 shape = SubResource("rock5_box")
 
-[node name="RockB" parent="." instance=ExtResource("10")]
+[node name="RockB" parent="." unique_id=1412841745 instance=ExtResource("10")]
 transform = Transform3D(2.1213, 0, 2.1213, 0, 3, 0, -2.1213, 0, 2.1213, 3, 0.1, -7)
 
-[node name="RockBBody" type="StaticBody3D" parent="."]
+[node name="RockBBody" type="StaticBody3D" parent="." unique_id=1496336638]
 transform = Transform3D(0.7071, 0, 0.7071, 0, 1, 0, -0.7071, 0, 0.7071, 3, 0.1, -7)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RockBBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RockBBody" unique_id=916129847]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.29, -0.03)
 shape = SubResource("rock3_box")
 
-[node name="WallBackA" parent="." instance=ExtResource("11")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -6, 0.1, -20)
+[node name="WallBackA" parent="." unique_id=1319047123 instance=ExtResource("11")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -6, 0.1, -21.964552)
 
-[node name="WallBackABody" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.1, -20)
+[node name="WallBackABody" type="StaticBody3D" parent="." unique_id=1775488377]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.1, -22.266699)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackABody" unique_id=1642448023]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="WallBackB" parent="." instance=ExtResource("11")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.1, -20)
+[node name="WallBackB" parent="." unique_id=1417852111 instance=ExtResource("11")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.1, -21.99589)
 
-[node name="WallBackBBody" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -20)
+[node name="WallBackBBody" type="StaticBody3D" parent="." unique_id=550523122]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -22.366089)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackBBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackBBody" unique_id=1212736691]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="WallBackC" parent="." instance=ExtResource("11")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 6, 0.1, -20)
+[node name="WallBackC" parent="." unique_id=327145984 instance=ExtResource("11")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 6, 0.1, -21.980333)
 
-[node name="WallBackCBody" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -20)
+[node name="WallBackCBody" type="StaticBody3D" parent="." unique_id=1596409502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -22.387936)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackCBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallBackCBody" unique_id=2067645642]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="WallSideA" parent="." instance=ExtResource("11")]
+[node name="WallSideA" parent="." unique_id=1660612398 instance=ExtResource("11")]
 transform = Transform3D(0, 0, 3, 0, 3, 0, -3, 0, 0, 10, 0.1, -8)
 
-[node name="WallSideABody" type="StaticBody3D" parent="."]
+[node name="WallSideABody" type="StaticBody3D" parent="." unique_id=1961425211]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10, 0.1, -8)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideABody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideABody" unique_id=112282831]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="WallSideB" parent="." instance=ExtResource("11")]
+[node name="WallSideB" parent="." unique_id=855521305 instance=ExtResource("11")]
 transform = Transform3D(0, 0, 3, 0, 3, 0, -3, 0, 0, 10, 0.1, -2)
 
-[node name="WallSideBBody" type="StaticBody3D" parent="."]
+[node name="WallSideBBody" type="StaticBody3D" parent="." unique_id=137164058]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10, 0.1, -2)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideBBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideBBody" unique_id=782450887]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="WallSideC" parent="." instance=ExtResource("11")]
+[node name="WallSideC" parent="." unique_id=1308397643 instance=ExtResource("11")]
 transform = Transform3D(0, 0, 3, 0, 3, 0, -3, 0, 0, 10, 0.1, -14)
 
-[node name="WallSideCBody" type="StaticBody3D" parent="."]
+[node name="WallSideCBody" type="StaticBody3D" parent="." unique_id=1550340772]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10, 0.1, -14)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideCBody"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSideCBody" unique_id=1898990072]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
 shape = SubResource("wall_box")
 
-[node name="Distant" type="Node3D" parent="."]
+[node name="Distant" type="Node3D" parent="." unique_id=1517015678]
 
-[node name="MountainA" parent="Distant" instance=ExtResource("12")]
+[node name="MountainA" parent="Distant" unique_id=289062068 instance=ExtResource("12")]
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, -30, 0, -70)
 
-[node name="MountainB" parent="Distant" instance=ExtResource("13")]
+[node name="MountainB" parent="Distant" unique_id=1944290314 instance=ExtResource("13")]
 transform = Transform3D(0, 0, 30, 0, 30, 0, -30, 0, 0, 25, 0, -85)
 
-[node name="MountainC" parent="Distant" instance=ExtResource("14")]
+[node name="MountainC" parent="Distant" unique_id=1963322123 instance=ExtResource("14")]
 transform = Transform3D(35, 0, 0, 0, 35, 0, 0, 0, 35, -15, 0, -110)
 
-[node name="MountainD" parent="Distant" instance=ExtResource("13")]
+[node name="MountainD" parent="Distant" unique_id=1107401012 instance=ExtResource("13")]
 transform = Transform3D(0, 0, -22, 0, 22, 0, 22, 0, 0, -70, 0, -60)
 
-[node name="HillsA" parent="Distant" instance=ExtResource("15")]
+[node name="HillsA" parent="Distant" unique_id=1464151683 instance=ExtResource("15")]
 transform = Transform3D(18, 0, 0, 0, 18, 0, 0, 0, 18, 45, 0, -45)
 
-[node name="HillsB" parent="Distant" instance=ExtResource("16")]
+[node name="HillsB" parent="Distant" unique_id=2052313939 instance=ExtResource("16")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, -55, 0, -35)
