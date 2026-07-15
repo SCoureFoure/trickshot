@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cgcu88r86ovd2"]
+
+[ext_resource type="Script" uid="uid://bx6a5woxapqnt" path="res://scripts/arrow.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://07g8ocig7anj" path="res://assets/oot/arrow.glb" id="2"]
+
+[sub_resource type="CapsuleShape3D" id="arrow_shape"]
+radius = 0.02
+height = 0.89628905
+
+[node name="OoTArrow" type="RigidBody3D" unique_id=216460780]
+collision_layer = 5
+mass = 0.1
+script = ExtResource("1")
+tip_length = 0.55
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=173953048]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, -0.104144536)
+shape = SubResource("arrow_shape")
+
+[node name="Mesh" parent="." unique_id=468240552 instance=ExtResource("2")]
+transform = Transform3D(0, -0.99991196, 0.013269945, 0, 0.013269945, 0.99991196, -1, 0, 0, 0, 0, 0)

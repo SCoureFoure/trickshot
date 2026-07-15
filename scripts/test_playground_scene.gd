@@ -63,10 +63,39 @@ func _run() -> void:
 	var right_hand = main.get_node_or_null("XROrigin3D/RightController/CollisionHand/RightHand")
 	_check("has_right_hand", right_hand != null)
 
-	_check("four_balls_in_group", get_nodes_in_group("balls").size() == 4)
+	_check("no_rack_balls", get_nodes_in_group("balls").size() == 0)
 
-	var target = main.get_node_or_null("Target")
-	_check("target_exists", target != null and target.has_signal("target_hit"))
+	# Three scoring targets at staggered distances for arrow-drop testing.
+	var target_specs := {
+		"TargetNear": -5.0,
+		"TargetMid": -10.0,
+		"TargetFar": -16.0,
+	}
+	var targets := {}
+	for tname in target_specs:
+		var t = main.get_node_or_null(tname)
+		targets[tname] = t
+		_check(tname + "_exists", t != null and t.has_signal("target_hit"))
+		_check(
+			tname + "_is_kaykit_archery",
+			t != null
+			and t.get_script() != null
+			and t.get_script().resource_path == "res://scripts/target.gd"
+			and t.get_node_or_null("Mesh") != null
+			and t.get_node_or_null("Rings") != null
+		)
+		_check(
+			tname + "_downrange_grounded",
+			t != null
+			and abs(t.transform.origin.z - target_specs[tname]) < 0.01
+			and abs(t.transform.origin.y - 0.577) < 0.001
+		)
+		var connected_to_main := false
+		if t != null:
+			for connection in t.get_signal_connection_list("target_hit"):
+				if connection["callable"].get_object() == main:
+					connected_to_main = true
+		_check(tname + "_hit_connected_to_main", connected_to_main)
 
 	var score_label = main.get_node_or_null("ScoreLabel")
 	_check(
@@ -74,28 +103,28 @@ func _run() -> void:
 		score_label != null and score_label is Label3D and score_label.text == "0"
 	)
 
-	var connections: Array = target.get_signal_connection_list("target_hit")
-	var connected_to_main := false
-	for connection in connections:
-		if connection["callable"].get_object() == main:
-			connected_to_main = true
-	_check("target_hit_connected_to_main", connected_to_main)
-
-	target.target_hit.emit(10)
+	targets["TargetNear"].target_hit.emit(10)
 	_check("score_after_first_hit", score_label.text == "10")
-	target.target_hit.emit(25)
-	_check("score_after_second_hit", score_label.text == "35")
+	targets["TargetFar"].target_hit.emit(25)
+	_check("score_accumulates_across_targets", score_label.text == "35")
+
+	# Playspace is rotated 90 deg: physical spawn-forward maps to world +X, so
+	# the range (world -Z) sits at the player's physical LEFT — the owner sits
+	# at a desk and turns left to shoot instead of punching the desk.
+	var origin: Node3D = main.get_node("XROrigin3D")
+	_check(
+		"playspace_rotated_left",
+		(origin.transform.basis * Vector3.FORWARD).is_equal_approx(Vector3(1, 0, 0))
+		and origin.transform.basis.get_scale().is_equal_approx(Vector3.ONE)
+	)
+	# Desktop preview compensates: camera must still face the range downrange.
+	var cam: Node3D = main.get_node("XROrigin3D/XRCamera3D")
+	_check(
+		"desktop_camera_faces_range",
+		(-cam.global_transform.basis.z).is_equal_approx(Vector3(0, 0, -1))
+	)
 
 	_check("has_reset_method", main.has_method("reset_balls"))
-
-	var b: Node3D = main.get_node("BouncyBall")
-	var before: Vector3 = b.global_transform.origin
-	b.global_position = Vector3(3, 3, 3)
-	main.reset_balls()
-	_check(
-		"reset_restores_ball",
-		b.global_transform.origin.distance_to(before) < 0.001
-	)
 
 	var left_controller = main.get_node("XROrigin3D/LeftController")
 	var right_controller = main.get_node("XROrigin3D/RightController")
@@ -116,20 +145,42 @@ func _run() -> void:
 	var panel = main.get_node_or_null("ButtonPanel")
 	_check("button_panel_exists", panel != null)
 
-	var wall = main.get_node_or_null("BounceWall")
+	# Ball rack + control panel sit at the player's physical 3 o'clock
+	# (world +Z): out of the vertical bow envelope in the shooting lane
+	# (world -Z) and away from the physical desk (world +X).
+	var rack: Node3D = main.get_node("Rack")
 	_check(
-		"bounce_wall_left_of_player",
-		wall != null and wall is StaticBody3D and wall.transform.origin.x < 0.0
+		"rack_out_of_shooting_lane",
+		rack.transform.origin.z > 0.3 and abs(rack.transform.origin.x) < 1.0
 	)
+	_check(
+		"panel_beside_rack",
+		panel.transform.origin.z > 0.3 and abs(panel.transform.origin.x) < 1.0
+	)
+	_check(
+		"spawn_point_over_rack",
+		main.SPAWN_POINT.z > 0.3
+		and abs(main.SPAWN_POINT.y - 1.0) < 0.2
+		and Vector2(
+			main.SPAWN_POINT.x - rack.transform.origin.x,
+			main.SPAWN_POINT.z - rack.transform.origin.z
+		).length() < 0.5
+	)
+
+	# Bounce wall retired: range is now target-shooting only.
+	_check("bounce_wall_removed", main.get_node_or_null("BounceWall") == null)
 
 	# Anti-tunnel invariant: static colliders must be thick because balls have
 	# no CCD (CCD eats bounce). Thin colliders reintroduce clip-through.
 	var floor_shape: Shape3D = main.get_node("Floor/CollisionShape3D").shape
 	_check("floor_collider_thick", floor_shape is BoxShape3D and floor_shape.size.y >= 1.0)
-	var wall_shape: Shape3D = main.get_node("BounceWall/CollisionShape3D").shape
-	_check("wall_collider_thick", wall_shape is BoxShape3D and wall_shape.size.x >= 1.0)
+	# Floor doubles as the valley ground under the distant mountain vista.
+	_check(
+		"floor_extends_to_vista",
+		floor_shape is BoxShape3D and floor_shape.size.x >= 200.0 and floor_shape.size.z >= 200.0
+	)
 
-	for n in ["ResetButton", "BouncySpawnButton", "BeachSpawnButton", "HeavySpawnButton", "BaseballSpawnButton"]:
+	for n in ["ResetButton"]:
 		var btn = main.get_node_or_null("ButtonPanel/" + n)
 		_check(
 			n + "_is_area_button",
@@ -188,7 +239,7 @@ func _run() -> void:
 	)
 
 	main.spawn_ball("bouncy")
-	_check("spawn_adds_ball", get_nodes_in_group("balls").size() == 5)
+	_check("spawn_adds_ball", get_nodes_in_group("balls").size() == 1)
 	_check("spawn_unknown_ignored", main.BALL_SCENES.get("nope") == null)
 	main.spawn_ball("nope")
 	_check("spawn_unknown_adds_nothing", main._spawned.size() == 1)
@@ -213,33 +264,59 @@ func _run() -> void:
 		"bow_stand_present",
 		main.get_node_or_null("BowStand") is StaticBody3D
 	)
+	var oot_bow = main.get_node_or_null("OoTBow")
+	_check(
+		"oot_bow_present",
+		oot_bow != null
+		and oot_bow.get_script() != null
+		and oot_bow.get_script().resource_path == "res://scripts/oot_bow.gd"
+		and oot_bow.second_hand_grab == 2
+	)
+	_check(
+		"oot_bow_stand_present",
+		main.get_node_or_null("OoTBowStand") is StaticBody3D
+	)
 	_check(
 		"shader_cache_under_camera",
 		main.get_node_or_null("XROrigin3D/XRCamera3D/ShaderCache") != null
 	)
 
+	var sky = main.get_node_or_null("Sky3D")
+	_check(
+		"sky3d_present",
+		sky is WorldEnvironment
+		and sky.get_script() != null
+		and sky.get_script().resource_path == "res://addons/sky_3d/src/Sky3D.gd"
+		and sky.environment != null
+	)
+	_check(
+		"sky3d_shadows_disabled",
+		sky != null and sky.sun != null and sky.moon != null
+		and sky.sun.shadow_enabled == false
+		and sky.moon.shadow_enabled == false
+	)
+	_check("sky3d_time_frozen", sky != null and sky.game_time_enabled == false)
+	_check("old_sun_removed", main.get_node_or_null("Sun") == null)
+
 	var stray_arrow = load("res://scenes/arrow.tscn").instantiate()
 	main.add_child(stray_arrow)
 	bow.global_position = Vector3(3, 3, 3)
+	oot_bow.global_position = Vector3(3, 3, 3)
 	main.reset_scene()
 	_check("reset_clears_arrows", stray_arrow.is_queued_for_deletion())
 	_check(
 		"reset_returns_bow",
 		bow.global_transform.origin.distance_to(Vector3(-0.55, 1.0, -0.35)) < 0.001
 	)
+	_check(
+		"reset_returns_oot_bow",
+		oot_bow.global_transform.origin.distance_to(Vector3(0.55, 1.0, -0.35)) < 0.001
+	)
 
-	# Range environment is visual dressing only: no scripts, no physics bodies,
-	# nothing that could perturb gameplay or the physics membrane.
+	# Range environment internals are covered by test_range_environment_scene.gd
+	# (props now carry static collision by design).
 	var env = main.get_node_or_null("RangeEnvironment")
-	var env_clean := env != null and env.get_child_count() >= 20
-	if env != null:
-		var stack: Array = [env]
-		while not stack.is_empty():
-			var node: Node = stack.pop_back()
-			if node is PhysicsBody3D or (node != env and node.get_script() != null):
-				env_clean = false
-			stack.append_array(node.get_children())
-	_check("range_environment_dressing_only", env_clean)
+	_check("range_environment_present", env != null and env.get_child_count() >= 20)
 
 	main.queue_free()
 

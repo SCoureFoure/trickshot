@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dp1ldcde7ednl"]
+
+[ext_resource type="Script" uid="uid://bvw8nj86pcwm5" path="res://scripts/oot_bow.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://dcdmsx1gd6mmd" path="res://assets/oot/bow.glb" id="2"]
+[ext_resource type="Script" uid="uid://dx3swqg2owe4p" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://07g8ocig7anj" path="res://assets/oot/arrow.glb" id="4"]
+
+[sub_resource type="BoxShape3D" id="bow_shape"]
+size = Vector3(0.1, 1.4269043, 0.31640625)
+
+[node name="OoTBow" type="RigidBody3D" unique_id=1160227266]
+collision_layer = 5
+mass = 1.2
+script = ExtResource("1")
+second_hand_grab = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1138602497]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0049560666, 0.1171875)
+shape = SubResource("bow_shape")
+
+[node name="Mesh" parent="." unique_id=1829493510 instance=ExtResource("2")]
+transform = Transform3D(0, 1, 0, 1, 0, 0, 0, 0, 1, 0.012290239, 0, 0)
+
+[node name="NockedArrow" parent="." unique_id=400637384 instance=ExtResource("4")]
+transform = Transform3D(-0.0037733912, -0.99069583, 0.13604328, 4.6511545e-10, 0.13604425, 0.99070287, -0.9999929, 0.003738299, -0.00051334733, -0.01702486, 0, -0.0783019)
+
+[node name="GrabHandleLeft" type="Marker3D" parent="." unique_id=1246755985]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.014991932, -0.018426435, -0.09505863)
+script = ExtResource("3")
+handle = "grip"
+mode = 1
+
+[node name="GrabHandleRight" type="Marker3D" parent="." unique_id=98360054]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0010854229, -0.019423535, -0.09442383)
+script = ExtResource("3")
+handle = "grip"
+hand = 1
+mode = 1
+
+[node name="StringGrabLeft" type="Marker3D" parent="." unique_id=64430292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000763759, 0, 0.20996386)
+script = ExtResource("3")
+handle = "string"
+mode = 2
+drive_position = 0.0
+drive_angle = 0.0
+drive_aim = 1.0
+
+[node name="StringGrabRight" type="Marker3D" parent="." unique_id=1051303969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.20910344)
+script = ExtResource("3")
+handle = "string"
+hand = 1
+mode = 2
+drive_position = 0.0
+drive_angle = 0.0
+drive_aim = 1.0
+
+[node name="Spawn" type="Node3D" parent="." unique_id=1536530913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, -0.1)

@@ -23,3 +23,7 @@ more.
 - `bow_draw.spec.md` ↔ `scripts/test_bow_draw.gd`
 - `arrow.spec.md` ↔ `scripts/test_arrow_scene.gd`
 - `bow.spec.md` ↔ `scripts/test_bow_scene.gd`
+- `oot_arrow.spec.md` ↔ `scripts/test_oot_arrow_scene.gd`
+- `oot_bow.spec.md` ↔ `scripts/test_oot_bow_scene.gd`
+- `archery_target.spec.md` ↔ `scripts/test_archery_target_scene.gd`
+- `range_environment.spec.md` ↔ `scripts/test_range_environment_scene.gd`

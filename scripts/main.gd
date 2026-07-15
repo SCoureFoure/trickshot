@@ -12,7 +12,7 @@ const BALL_SCENES := {
 	"baseball": preload("res://scenes/balls/ball_baseball.tscn"),
 }
 const SPAWN_CAP := 10
-const SPAWN_POINT := Vector3(0.5, 1.0, -0.35)
+const SPAWN_POINT := Vector3(0.35, 1.0, 0.8)
 
 var _spawned: Array = []
 
@@ -25,15 +25,33 @@ func _ready() -> void:
 		get_viewport().use_xr = true
 	else:
 		print("OpenXR not initialized - desktop preview mode")
+		# Playspace is yawed -90 deg (range at the player's physical left).
+		# Desktop preview has no head tracking, so aim the camera back
+		# downrange to keep the flat preview useful.
+		$XROrigin3D/XRCamera3D.rotation.y = PI / 2
 
-	$Target.target_hit.connect(_on_target_hit)
+	# Sky3D config must happen here, not in the tscn: its exported setters are
+	# aliases guarded by `if tod:`/`if sky:` and silently drop values applied
+	# before its children exist. By our _ready they are built (child-first).
+	$Sky3D.game_time_enabled = false
+	$Sky3D.current_time = 10.0
+	$Sky3D.update_interval = 0.1
+	$Sky3D.sky_contribution = 0.75
+	$Sky3D.fog_enabled = false
+	# Quest 2 hard constraint: no realtime shadows. SkyDome force-re-enables
+	# shadow_enabled on every sun/moon energy update, so the kill must come
+	# AFTER all time/sky config (time is frozen, so no further updates fire).
+	# Opacity 0 keeps shadows invisible even if the day cycle is re-enabled.
+	$Sky3D.sun_shadow_opacity = 0.0
+	$Sky3D.moon_shadow_opacity = 0.0
+	$Sky3D.sun.shadow_enabled = false
+	$Sky3D.moon.shadow_enabled = false
+
+	for target in [$TargetNear, $TargetMid, $TargetFar]:
+		target.target_hit.connect(_on_target_hit)
 	$XROrigin3D/LeftController.button_pressed.connect(_on_controller_button)
 	$XROrigin3D/RightController.button_pressed.connect(_on_controller_button)
 	$ButtonPanel/ResetButton.button_pressed.connect(func(_button): reset_scene())
-	$ButtonPanel/BouncySpawnButton.button_pressed.connect(func(_button): spawn_ball("bouncy"))
-	$ButtonPanel/BeachSpawnButton.button_pressed.connect(func(_button): spawn_ball("beach"))
-	$ButtonPanel/HeavySpawnButton.button_pressed.connect(func(_button): spawn_ball("heavy"))
-	$ButtonPanel/BaseballSpawnButton.button_pressed.connect(func(_button): spawn_ball("baseball"))
 
 
 func _on_target_hit(points: int) -> void:
@@ -75,6 +93,7 @@ func reset_scene() -> void:
 	for arrow in get_tree().get_nodes_in_group("arrows"):
 		arrow.queue_free()
 	$Bow.reset_to_home()
+	$OoTBow.reset_to_home()
 	reset_balls()
 	_score = Scoring.new()
 	$ScoreLabel.text = "0"
