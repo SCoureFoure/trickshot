@@ -66,10 +66,18 @@ func points_for_local_hit(local_pos: Vector3) -> int:
 func _on_face_body_entered(body: Node3D) -> void:
 	if not (body.is_in_group("balls") or body.is_in_group("arrows")):
 		return
+	register_hit(body, body.global_position)
+
+
+## Direct hit registration for projectiles whose collider may be disabled
+## before the Face area samples the overlap (arrows freeze on stick).
+## `world_hit` is the exact impact point used for ring scoring; `body` keys
+## the per-projectile cooldown.
+func register_hit(body: Node3D, world_hit: Vector3) -> void:
 	var id := body.get_instance_id()
 	if _last_hit.has(id) and _time - _last_hit[id] < HIT_COOLDOWN:
 		return
-	var points := points_for_local_hit(to_local(body.global_position))
+	var points := points_for_local_hit(to_local(world_hit))
 	if points > 0:
 		_last_hit[id] = _time
 		emit_signal("target_hit", points)

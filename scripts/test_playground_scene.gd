@@ -68,8 +68,8 @@ func _run() -> void:
 	# Three scoring targets at staggered distances for arrow-drop testing.
 	var target_specs := {
 		"TargetNear": -5.0,
-		"TargetMid": -10.0,
-		"TargetFar": -16.0,
+		"TargetMid": -8.005225,
+		"TargetFar": -19.272429,
 	}
 	var targets := {}
 	for tname in target_specs:
@@ -145,27 +145,33 @@ func _run() -> void:
 	var panel = main.get_node_or_null("ButtonPanel")
 	_check("button_panel_exists", panel != null)
 
-	# Ball rack + control panel sit at the player's physical 3 o'clock
+	var ambience: Node = main.get_node_or_null("Ambience")
+	_check(
+		"ambience_ready",
+		ambience is AudioStreamPlayer
+		and ambience.autoplay
+		and ambience.stream is AudioStreamMP3
+		and ambience.stream.loop
+	)
+
+	# Control panel and ball spawn sit at the player's physical 3 o'clock
 	# (world +Z): out of the vertical bow envelope in the shooting lane
-	# (world -Z) and away from the physical desk (world +X).
-	var rack: Node3D = main.get_node("Rack")
+	# (world -Z) and away from the physical desk (world +X). The ball rack
+	# itself was removed (it blocked the player) — balls spawn in mid-air
+	# at seated arm's reach.
 	_check(
-		"rack_out_of_shooting_lane",
-		rack.transform.origin.z > 0.3 and abs(rack.transform.origin.x) < 1.0
+		"panel_out_of_shooting_lane",
+		panel.transform.origin.z >= 0.0 and panel.transform.origin.length() < 1.2
 	)
 	_check(
-		"panel_beside_rack",
-		panel.transform.origin.z > 0.3 and abs(panel.transform.origin.x) < 1.0
-	)
-	_check(
-		"spawn_point_over_rack",
+		"spawn_point_in_seated_reach",
 		main.SPAWN_POINT.z > 0.3
 		and abs(main.SPAWN_POINT.y - 1.0) < 0.2
-		and Vector2(
-			main.SPAWN_POINT.x - rack.transform.origin.x,
-			main.SPAWN_POINT.z - rack.transform.origin.z
-		).length() < 0.5
+		and abs(main.SPAWN_POINT.x) < 1.0
 	)
+
+	# Rack retired: it sat in the player's way at 3 o'clock.
+	_check("rack_removed", main.get_node_or_null("Rack") == null)
 
 	# Bounce wall retired: range is now target-shooting only.
 	_check("bounce_wall_removed", main.get_node_or_null("BounceWall") == null)

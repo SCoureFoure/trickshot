@@ -88,6 +88,21 @@ func _run() -> void:
 	target._on_face_body_entered(stranger)
 	_check("non_arrow_ignored", scored == [25])
 
+	var arrow_scene: PackedScene = load("res://scenes/oot_arrow.tscn")
+	var real_arrow: RigidBody3D = arrow_scene.instantiate()
+	root.add_child(real_arrow)
+	real_arrow.global_position = target.to_global(BULL) + Vector3(0, 0, 1)
+	real_arrow.stick(target.to_global(BULL), target.get_node("Backing/CollisionShape3D"))
+	_check("stuck_arrow_scores_bullseye", scored == [25, 25])
+	real_arrow.stick(target.to_global(BULL), target.get_node("Backing/CollisionShape3D"))
+	_check("stuck_arrow_cooldown_blocks_repeat", scored == [25, 25])
+	var free_arrow: RigidBody3D = arrow_scene.instantiate()
+	root.add_child(free_arrow)
+	free_arrow.stick(Vector3(50, 0, 0), null)
+	_check("stick_without_collider_safe", scored == [25, 25])
+	real_arrow.queue_free()
+	free_arrow.queue_free()
+
 	target.free()
 
 	if _failures == 0:

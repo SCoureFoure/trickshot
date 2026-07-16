@@ -59,12 +59,12 @@ func _physics_process(delta: float) -> void:
 	query.exclude = [get_rid()]
 	var hit := get_world_3d().direct_space_state.intersect_ray(query)
 	if hit:
-		stick(hit.position)
+		stick(hit.position, hit.collider)
 	_last_tip = tip
 
 
 ## Freezes the arrow at the hit point so it appears stuck in the surface.
-func stick(at: Vector3) -> void:
+func stick(at: Vector3, collider: Object = null) -> void:
 	_stuck = true
 	_flying = false
 	_age = 0.0
@@ -73,6 +73,11 @@ func stick(at: Vector3) -> void:
 	angular_velocity = Vector3.ZERO
 	global_position = at + global_transform.basis.z * (tip_length - STICK_PENETRATION)
 	$CollisionShape3D.set_deferred("disabled", true)
+	var node := collider as Node
+	while node != null and not node is Target:
+		node = node.get_parent()
+	if node != null:
+		node.register_hit(self, at)
 
 
 func _tip() -> Vector3:

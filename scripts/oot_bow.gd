@@ -120,6 +120,7 @@ func _fire(ratio: float) -> void:
 	get_parent().add_child(arrow)
 	arrow.global_transform = $Spawn.global_transform
 	arrow.fire(BowDraw.arrow_speed(ratio))
+	$ReleaseSound.play()
 
 
 ## Returns the bow to where it started (used by the scene reset button).

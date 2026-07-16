@@ -108,6 +108,14 @@ func _run() -> void:
 		arrows.size() == 1 and abs(arrows[0].linear_velocity.length() - 30.0) < 0.001
 	)
 
+	var release_sound: Node = bow.get_node_or_null("ReleaseSound")
+	_check(
+		"release_sound_ready",
+		release_sound is AudioStreamPlayer3D
+		and release_sound.stream != null
+		and release_sound.stream is AudioStreamMP3
+	)
+
 	bow._process(0.0)
 	_check(
 		"string_resets_after_fire",

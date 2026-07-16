@@ -108,6 +108,14 @@ func _run() -> void:
 		bow.global_transform.origin.distance_to(Vector3.ZERO) < 0.001
 	)
 
+	var release_sound: Node = bow.get_node_or_null("ReleaseSound")
+	_check(
+		"release_sound_ready",
+		release_sound is AudioStreamPlayer3D
+		and release_sound.stream != null
+		and release_sound.stream is AudioStreamMP3
+	)
+
 	bow.queue_free()
 
 	if _failures == 0:
