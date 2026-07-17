@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dcdmsx1gd6mmd" path="res://assets/oot/bow.glb" id="2"]
 [ext_resource type="Script" uid="uid://dx3swqg2owe4p" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://07g8ocig7anj" path="res://assets/oot/arrow.glb" id="4"]
-[ext_resource type="AudioStreamMP3" path="res://assets/audio/arrow_twang.mp3" id="5"]
+[ext_resource type="AudioStream" uid="uid://cugs27uvc2wqd" path="res://assets/audio/arrow_twang.mp3" id="5"]
+[ext_resource type="AudioStream" uid="uid://cbfssuup3a0eu" path="res://assets/audio/arrow_wood_impact.mp3" id="dryfire"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="nockzone"]
 
 [sub_resource type="BoxShape3D" id="bow_shape"]
 size = Vector3(0.1, 1.4269043, 0.31640625)
@@ -39,7 +41,7 @@ hand = 1
 mode = 1
 
 [node name="StringGrabLeft" type="Marker3D" parent="." unique_id=64430292]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000763759, 0, 0.20996386)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000763759, 0.018082954, 0.20996386)
 script = ExtResource("3")
 handle = "string"
 mode = 2
@@ -48,7 +50,7 @@ drive_angle = 0.0
 drive_aim = 1.0
 
 [node name="StringGrabRight" type="Marker3D" parent="." unique_id=1051303969]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.20910344)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.018197685, 0.20910344)
 script = ExtResource("3")
 handle = "string"
 hand = 1
@@ -60,6 +62,16 @@ drive_aim = 1.0
 [node name="Spawn" type="Node3D" parent="." unique_id=1536530913]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, -0.1)
 
-[node name="ReleaseSound" type="AudioStreamPlayer3D" parent="."]
+[node name="ReleaseSound" type="AudioStreamPlayer3D" parent="." unique_id=9493498]
 stream = ExtResource("5")
 volume_db = -6.0
+
+[node name="DryFireSound" type="AudioStreamPlayer3D" parent="." unique_id=681946262]
+stream = ExtResource("dryfire")
+volume_db = -6.0
+
+[node name="NockZone" parent="." unique_id=925324886 instance=ExtResource("nockzone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.28)
+grab_distance = 0.08
+snap_mode = 1
+snap_require = "nockable"

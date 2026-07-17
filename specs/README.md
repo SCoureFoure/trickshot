@@ -23,6 +23,9 @@ more.
 - `bow_draw.spec.md` ↔ `scripts/test_bow_draw.gd`
 - `arrow.spec.md` ↔ `scripts/test_arrow_scene.gd`
 - `bow.spec.md` ↔ `scripts/test_bow_scene.gd`
+- `bow_hand_roles.spec.md` ↔ `scripts/test_bow_hand_roles.gd`
+- `bow_load.spec.md` ↔ `scripts/test_bow_load.gd`
+- `arrow_nock_zone.spec.md` ↔ `scripts/test_arrow_nock_zone.gd`
 - `oot_arrow.spec.md` ↔ `scripts/test_oot_arrow_scene.gd`
 - `oot_bow.spec.md` ↔ `scripts/test_oot_bow_scene.gd`
 - `archery_target.spec.md` ↔ `scripts/test_archery_target_scene.gd`

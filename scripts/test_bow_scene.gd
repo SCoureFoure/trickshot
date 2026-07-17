@@ -55,6 +55,7 @@ func _run() -> void:
 
 	bow._on_bow_grabbed(bow, handA)
 	bow._on_bow_grabbed(bow, handB)
+	bow.load_arrow()
 	bow._process(0.0)
 
 	_check("draw_tracks_hands", abs(bow._draw - 1.0) < 0.0001)

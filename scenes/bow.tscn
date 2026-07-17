@@ -4,13 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://dod16og0yxure" path="res://assets/kaykit/bow.gltf" id="2"]
 [ext_resource type="Script" uid="uid://dx3swqg2owe4p" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://c0a4tqevxpw6o" path="res://assets/kaykit/arrow_bow.gltf" id="4"]
-[ext_resource type="AudioStreamMP3" path="res://assets/audio/arrow_twang.mp3" id="5"]
+[ext_resource type="AudioStream" uid="uid://cugs27uvc2wqd" path="res://assets/audio/arrow_twang.mp3" id="5"]
+[ext_resource type="AudioStream" uid="uid://cbfssuup3a0eu" path="res://assets/audio/arrow_wood_impact.mp3" id="dryfire"]
+[ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="nockzone"]
 
 [sub_resource type="BoxShape3D" id="bow_shape"]
 size = Vector3(0.1, 1.3, 0.25)
 
 [sub_resource type="BoxMesh" id="string_mesh"]
-size = Vector3(0.006, 1.372406, 0.006)
+size = Vector3(0.006, 0.6934433, 0.006)
 
 [node name="Bow" type="RigidBody3D" unique_id=1981951425]
 collision_layer = 5
@@ -25,15 +27,15 @@ shape = SubResource("bow_shape")
 transform = Transform3D(0, -0.7, 0, 0, 0, 0.7, -0.7, 0, 0, 0, 0, 0)
 
 [node name="StringTop" type="MeshInstance3D" parent="." unique_id=608177339]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017974854, 0.24649137)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35045242, 0.25669235)
 mesh = SubResource("string_mesh")
 
 [node name="StringBottom" type="MeshInstance3D" parent="." unique_id=222480243]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010940552, 0.24607909)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.34284994, 0.25657284)
 mesh = SubResource("string_mesh")
 
 [node name="NockedArrow" parent="." unique_id=1374209654 instance=ExtResource("4")]
-transform = Transform3D(-0.6, 0, 0, 0, 0.6, 0, 0, 0, -0.6, -0.028735071, 0.0052407756, -0.09465886)
+transform = Transform3D(0.59999996, 0, 0, 0, -0.59986997, 0.012489089, 0, -0.012489089, -0.59986997, -0.028735071, 0.0052407756, -0.09465886)
 
 [node name="GrabHandleLeft" type="Marker3D" parent="." unique_id=195641972]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.008349948, -0.0938864)
@@ -49,7 +51,7 @@ hand = 1
 mode = 1
 
 [node name="StringGrabLeft" type="Marker3D" parent="." unique_id=368960602]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014841877, 0.030254424, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.014841877, 0.030254424, 0.19212116)
 script = ExtResource("3")
 handle = "string"
 mode = 2
@@ -58,7 +60,7 @@ drive_angle = 0.0
 drive_aim = 1.0
 
 [node name="StringGrabRight" type="Marker3D" parent="." unique_id=2067350472]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012863383, 0.029990226, 0.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012863383, 0.029990226, 0.1866589)
 script = ExtResource("3")
 handle = "string"
 hand = 1
@@ -70,6 +72,16 @@ drive_aim = 1.0
 [node name="Spawn" type="Node3D" parent="." unique_id=692715757]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
 
-[node name="ReleaseSound" type="AudioStreamPlayer3D" parent="."]
+[node name="ReleaseSound" type="AudioStreamPlayer3D" parent="." unique_id=31766092]
 stream = ExtResource("5")
 volume_db = -6.0
+
+[node name="DryFireSound" type="AudioStreamPlayer3D" parent="." unique_id=2052931025]
+stream = ExtResource("dryfire")
+volume_db = -6.0
+
+[node name="NockZone" parent="." unique_id=1547438447 instance=ExtResource("nockzone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00017903373, 0.25725257)
+grab_distance = 0.08
+snap_mode = 1
+snap_require = "nockable"

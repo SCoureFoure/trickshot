@@ -92,6 +92,13 @@ func reset_scene() -> void:
 	_spawned.clear()
 	for arrow in get_tree().get_nodes_in_group("arrows"):
 		arrow.queue_free()
+	for bow in [$Bow, $OoTBow]:
+		var zone = bow.get_node_or_null("NockZone")
+		if zone != null and zone.has_snapped_object():
+			zone.drop_object()
+		bow.unload_arrow()
+	for loose in get_tree().get_nodes_in_group("nockable"):
+		loose.reset_to_home()
 	$Bow.reset_to_home()
 	$OoTBow.reset_to_home()
 	reset_balls()

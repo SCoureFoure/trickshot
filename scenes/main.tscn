@@ -25,6 +25,8 @@
 [ext_resource type="Script" uid="uid://cjmkcj8hwm7ts" path="res://addons/sky_3d/src/TimeOfDay.gd" id="18_tel4y"]
 [ext_resource type="AudioStream" uid="uid://bm81s8qu3qp1i" path="res://assets/audio/prairie_ambience.mp3" id="19_amb"]
 [ext_resource type="PackedScene" path="res://scenes/character.tscn" id="20_char"]
+[ext_resource type="PackedScene" uid="uid://bon1nmch24gmo" path="res://assets/kaykit_hex/barrel.gltf" id="21_barrel"]
+[ext_resource type="PackedScene" uid="uid://bm2pqk7rs8tqg" path="res://scenes/arrow_pickable.tscn" id="22_arrow"]
 
 [sub_resource type="BoxShape3D" id="floor_shape"]
 size = Vector3(300, 2, 300)
@@ -298,6 +300,18 @@ surface_material_override/0 = SubResource("stand_material")
 
 [node name="OoTBow" parent="." unique_id=896460728 instance=ExtResource("17")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 1, -0.35)
+
+[node name="ArrowBarrel" parent="." instance=ExtResource("21_barrel")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.75, 0, -0.15)
+
+[node name="LooseArrow1" parent="." instance=ExtResource("22_arrow")]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.78, 0.55, -0.18)
+
+[node name="LooseArrow2" parent="." instance=ExtResource("22_arrow")]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.75, 0.55, -0.15)
+
+[node name="LooseArrow3" parent="." instance=ExtResource("22_arrow")]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.72, 0.55, -0.12)
 
 [node name="RangeEnvironment" parent="." unique_id=919433514 instance=ExtResource("16")]
 

@@ -258,6 +258,21 @@ func _run() -> void:
 	_check("reset_clears_spawned", main._spawned.size() == 0)
 	_check("reset_zeroes_score", main.get_node("ScoreLabel").text == "0")
 
+	main.get_node("Bow").load_arrow()
+	main.get_node("OoTBow").load_arrow()
+	var displaced = get_nodes_in_group("nockable")[0]
+	var displaced_home: Vector3 = displaced.global_position
+	displaced.global_position = Vector3(9, 9, 9)
+	main.reset_scene()
+	_check(
+		"reset_unloads_bows",
+		main.get_node("Bow")._loaded == false and main.get_node("OoTBow")._loaded == false
+	)
+	_check(
+		"reset_returns_loose_arrow",
+		displaced.global_position.distance_to(displaced_home) < 0.001
+	)
+
 	var bow = main.get_node_or_null("Bow")
 	_check(
 		"bow_present",
@@ -323,6 +338,26 @@ func _run() -> void:
 	# (props now carry static collision by design).
 	var env = main.get_node_or_null("RangeEnvironment")
 	_check("range_environment_present", env != null and env.get_child_count() >= 20)
+
+	_check("arrow_barrel_present", main.get_node_or_null("ArrowBarrel") != null)
+	var loose := get_nodes_in_group("nockable")
+	_check("loose_arrows_present", loose.size() >= 2)
+	# Ammo sits by the KayKit bow (world (-0.55, *, -0.35)); reachable there.
+	# Check horizontal proximity only — arrows fall to the barrel/ground, so y
+	# is not fixed.
+	var bow_xz := Vector2(-0.55, -0.35)
+	var all_by_bow := true
+	for a in loose:
+		var p: Vector3 = a.global_position
+		if Vector2(p.x, p.z).distance_to(bow_xz) > 0.6:
+			all_by_bow = false
+	_check("loose_arrows_by_kaykit_bow", all_by_bow)
+	# Must not have auto-snapped into either bow's nock zone on spawn.
+	_check(
+		"loose_arrows_not_auto_nocked",
+		main.get_node("Bow")._loaded == false
+		and main.get_node("OoTBow")._loaded == false
+	)
 
 	main.queue_free()
 
