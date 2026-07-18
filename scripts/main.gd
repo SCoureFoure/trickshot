@@ -15,6 +15,10 @@ const SPAWN_CAP := 10
 const SPAWN_POINT := Vector3(0.35, 1.0, 0.8)
 
 var _spawned: Array = []
+var _debug_overlay: DebugOverlay
+var _flash_label: Label
+var _cap_viewport: SubViewport
+var _cap_camera: Camera3D
 
 
 func _ready() -> void:
@@ -53,6 +57,28 @@ func _ready() -> void:
 	$XROrigin3D/RightController.button_pressed.connect(_on_controller_button)
 	$ButtonPanel/ResetButton.button_pressed.connect(func(_button): reset_scene())
 
+	# Debug tooling: tag inspectable objects, then add the overlay (inert unless
+	# the DEBUG env var is set — see debug_overlay.gd / analyze-screenshot skill).
+	_tag_debug($OoTBow, "oot-bow")
+	_tag_debug($OoTBow.get_node_or_null("NockedArrow"), "oot-bow-nocked")
+	_tag_debug($Bow, "bow")
+	_tag_debug($TargetNear, "target-near")
+	_tag_debug($TargetMid, "target-mid")
+	_tag_debug($TargetFar, "target-far")
+	_debug_overlay = DebugOverlay.new()
+	add_child(_debug_overlay)
+	_setup_screenshot_flash()
+	_setup_capture()
+
+
+## Marks a node as inspectable by the debug overlay: a stable id + group
+## membership so the overlay can find it without a per-frame tree walk.
+func _tag_debug(node: Node, id: String) -> void:
+	if node == null:
+		return
+	node.set_meta("debug_id", id)
+	node.add_to_group("debug_tracked")
+
 
 func _on_target_hit(points: int) -> void:
 	$ScoreLabel.text = str(_score.register(points))
@@ -61,6 +87,71 @@ func _on_target_hit(points: int) -> void:
 func _on_controller_button(button_name: String) -> void:
 	if button_name == "by_button":
 		reset_scene()
+	elif button_name == "primary_click":
+		_capture_screenshot()
+
+
+## A brief, comfort-safe HUD confirmation when a screenshot lands: a small
+## fading caption top-center (no full-screen flash — the owner gets motion sick).
+func _setup_screenshot_flash() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 100
+	add_child(layer)
+	_flash_label = Label.new()
+	_flash_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_flash_label.position = Vector2(0, 40)
+	_flash_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_flash_label.modulate.a = 0.0
+	layer.add_child(_flash_label)
+
+
+## A hidden SubViewport that shares the main World3D (own_world_3d = false), so
+## its camera renders the same scene. The XR main viewport draws to a write-only
+## OpenXR swapchain whose get_image() is always empty; this mirror IS
+## CPU-readable. Idle (UPDATE_DISABLED) until a capture is requested.
+func _setup_capture() -> void:
+	_cap_viewport = SubViewport.new()
+	_cap_viewport.size = Vector2i(1280, 720)
+	_cap_viewport.own_world_3d = false
+	_cap_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	add_child(_cap_viewport)
+	_cap_camera = Camera3D.new()
+	_cap_camera.current = true
+	_cap_viewport.add_child(_cap_camera)
+
+
+func _capture_screenshot() -> void:
+	var frame := Engine.get_frames_drawn()
+
+	# Render one mirror frame from the headset viewpoint into the readable viewport.
+	var img: Image = null
+	if _cap_viewport != null:
+		var xr_cam := $XROrigin3D/XRCamera3D
+		if xr_cam != null:
+			_cap_camera.global_transform = xr_cam.global_transform
+			_cap_camera.fov = xr_cam.fov
+		_cap_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+		await RenderingServer.frame_post_draw
+		img = _cap_viewport.get_texture().get_image()
+
+	var png := DebugScreenshot.save_image(img, frame)
+	var json := ""
+	if _debug_overlay != null:
+		json = DebugScreenshot.save_state_sidecar(_debug_overlay.get_last_state(), frame)
+
+	if png == "" and json == "":
+		push_warning("screenshot capture produced nothing (DEBUG off + mirror empty?)")
+		return
+	print("captured: png=%s json=%s" % [png, json])
+	_flash_screenshot("shot_%d" % frame)
+
+
+func _flash_screenshot(file_name: String) -> void:
+	if _flash_label == null:
+		return
+	_flash_label.text = "📸 %s" % file_name
+	_flash_label.modulate.a = 1.0
+	create_tween().tween_property(_flash_label, "modulate:a", 0.0, 0.8)
 
 
 func reset_balls() -> void:

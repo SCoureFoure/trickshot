@@ -3,3 +3,5 @@ android/
 export_presets.cfg
 *.tmp
 .warboss-horde/
+debug/
+debug.env

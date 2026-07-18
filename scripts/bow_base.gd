@@ -14,6 +14,10 @@ var _grip_hand: Node3D = null
 var _string_hand: Node3D = null
 var _draw := 0.0
 
+## The pickable arrow currently snapped in the nock zone, tagged for the debug
+## overlay so the actually-visible rest arrow shows up in captures.
+var _nocked_pickable: Node = null
+
 ## True when an arrow has been loaded into the nock (via load_arrow). An empty
 ## bow shows no nocked arrow and dry-fires instead of firing.
 var _loaded := false
@@ -91,12 +95,19 @@ func unload_arrow() -> void:
 	_loaded = false
 
 
-func _on_nock_zone_picked_up(_what) -> void:
+func _on_nock_zone_picked_up(what) -> void:
 	load_arrow()
+	if what is Node:
+		what.set_meta("debug_id", "nocked-pickable")
+		what.add_to_group("debug_tracked")
+		_nocked_pickable = what
 
 
 func _on_nock_zone_dropped() -> void:
 	unload_arrow()
+	if is_instance_valid(_nocked_pickable):
+		_nocked_pickable.remove_from_group("debug_tracked")
+	_nocked_pickable = null
 
 
 ## A full-draw release with no arrow loaded: distinct sound, no projectile.
@@ -115,6 +126,17 @@ func _fire(ratio: float) -> void:
 ## Overridable: the PackedScene this bow fires. Base returns null.
 func _arrow_scene() -> PackedScene:
 	return null
+
+
+## Live state for the debug HUD overlay (see debug_overlay.gd). Subclasses
+## override _nock_offset to report their nock pull-back distance.
+func debug_state() -> Dictionary:
+	return {"draw": _draw, "loaded": _loaded, "nock": _nock_offset()}
+
+
+## Overridable: current nock pull-back distance in meters. Base has none.
+func _nock_offset() -> float:
+	return 0.0
 
 
 ## Returns the bow to where it started (used by the scene reset button).

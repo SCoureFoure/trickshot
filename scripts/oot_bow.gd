@@ -79,3 +79,7 @@ func _update_draw_visual() -> void:
 
 func _arrow_scene() -> PackedScene:
 	return ARROW_SCENE
+
+
+func _nock_offset() -> float:
+	return NOCK_PULL * _draw
