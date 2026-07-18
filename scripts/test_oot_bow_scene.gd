@@ -46,6 +46,18 @@ func _run() -> void:
 				string_count += 1
 	_check("grab_points_configured", grip_count == 2 and string_count == 2)
 
+	# At rest (no draw) the string-grab points must sit at the string/nock
+	# meeting point — the arrow tail, beside the NockZone — not up at the riser.
+	# Regression: NOCK_TAIL_OFFSET too small parked the grab point mid-shaft,
+	# forcing the player to reach to the riser to pull the string.
+	bow._process(0.0)
+	var zone_z: float = bow.get_node("NockZone").position.z
+	_check(
+		"string_grab_rests_at_nock",
+		abs(bow.get_node("StringGrabLeft").position.z - zone_z) < 0.05
+		and abs(bow.get_node("StringGrabRight").position.z - zone_z) < 0.05
+	)
+
 	var handA := Node3D.new()
 	var handB := Node3D.new()
 	root.add_child(handA)

@@ -110,12 +110,29 @@ func _on_nock_zone_picked_up(what) -> void:
 
 func _on_nock_zone_dropped() -> void:
 	unload_arrow()
+	_restore_pickable(_take_nocked_pickable(), false)
+
+
+## Detaches the hidden nocked pickable from the bow and clears the ref. Must be
+## taken BEFORE the nock zone drops it, so the resulting has_dropped signal
+## can't double-restore it.
+func _take_nocked_pickable() -> Node:
 	var p = _nocked_pickable
 	_nocked_pickable = null
-	if is_instance_valid(p):
-		p.visible = true
-		if p.has_meta("debug_id"):
-			p.remove_from_group("debug_tracked")
+	return p
+
+
+## Restores a previously nocked pickable: visible again, untracked by the debug
+## overlay. `send_home` additionally returns it to its rack spot — used on fire,
+## where the pickable would otherwise reappear inside the just-fired nock zone.
+func _restore_pickable(p: Node, send_home: bool) -> void:
+	if not is_instance_valid(p):
+		return
+	p.visible = true
+	if p.has_meta("debug_id"):
+		p.remove_from_group("debug_tracked")
+	if send_home and p.has_method("reset_to_home"):
+		p.reset_to_home()
 
 
 ## A full-draw release with no arrow loaded: distinct sound, no projectile.
@@ -129,8 +146,7 @@ func _fire(ratio: float) -> void:
 	arrow.global_transform = $Spawn.global_transform
 	arrow.fire(BowDraw.arrow_speed(ratio))
 	$ReleaseSound.play()
-	var p = _nocked_pickable
-	_nocked_pickable = null
+	var p := _take_nocked_pickable()
 	var zone = get_node_or_null("NockZone")
 	if zone != null:
 		zone.enabled = false
@@ -138,12 +154,7 @@ func _fire(ratio: float) -> void:
 			zone.drop_object()
 		get_tree().create_timer(NOCK_RESNAP_LOCKOUT).timeout.connect(
 			func(): if is_instance_valid(zone): zone.enabled = true)
-	if is_instance_valid(p):
-		p.visible = true
-		if p.has_meta("debug_id"):
-			p.remove_from_group("debug_tracked")
-		if p.has_method("reset_to_home"):
-			p.reset_to_home()
+	_restore_pickable(p, true)
 
 
 ## Overridable: the PackedScene this bow fires. Base returns null.

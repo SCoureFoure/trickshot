@@ -18,11 +18,14 @@ const ARROW_SCENE := preload("res://scenes/oot_arrow.tscn")
 ## shaft axis.
 const NOCK_PULL := 0.497
 
-## How far back along the shaft axis the string-grab point sits from the nocked
-## arrow's origin. Kept small so the hand grabs ON the arrow (where the player
-## reaches) rather than up the limb — the pull axis has a large +Y component, so
-## a big offset lifts the grab point off the arrow.
-const NOCK_TAIL_OFFSET := 0.05
+## Distance from the nocked arrow's origin back to its tail (nock), along the
+## shaft axis: the arrow mesh spans tip_length 0.55 ahead of its origin and
+## this much behind (capsule height 0.896 in arrow_pickable.tscn). The
+## string-grab points ride exactly here so the hand grabs where the string
+## meets the nock — a smaller value parks the grab point mid-shaft at the
+## riser. (The shaft axis is ~pure bow-local +Z; it has no vertical component,
+## so a full-tail offset does not lift the grab point off the arrow.)
+const NOCK_TAIL_OFFSET := 0.344
 
 ## Editor-authored rest transform of the nocked arrow — the source of truth
 ## for where the arrow sits on the riser. Draw slides the arrow back along
