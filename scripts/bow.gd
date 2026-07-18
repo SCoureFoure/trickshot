@@ -33,7 +33,7 @@ const ARROW_SCENE := preload("res://scenes/arrow.tscn")
 
 func _update_draw_visual() -> void:
 	var nock := Vector3(0, NOCK_HEIGHT, STRING_REST + NOCK_PULL * _draw)
-	$NockedArrow.visible = _draw > 0.0 and _loaded
+	$NockedArrow.visible = _loaded
 	$NockedArrow.position.y = NOCK_HEIGHT
 	$NockedArrow.position.z = nock.z - NOCK_TAIL_OFFSET
 	# The visible string hand snaps to these grab points, so riding them on

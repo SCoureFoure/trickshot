@@ -62,9 +62,11 @@ func _run() -> void:
 	for i in range(180):
 		await physics_frame
 	_check("plants_on_floor_freezes", planted.freeze == true)
+	# Rests with tip buried in the floor and origin ~tip_length (OoT: 0.55) above
+	# it, plus a frame of overshoot — so the upper bound tracks the OoT arrow.
 	_check(
 		"plants_on_floor_rests_near_floor",
-		planted.global_position.y >= -0.1 and planted.global_position.y <= 0.5
+		planted.global_position.y >= -0.1 and planted.global_position.y <= 0.7
 	)
 
 	# no_floor_keeps_falling: same tip-down orientation, nothing below it.

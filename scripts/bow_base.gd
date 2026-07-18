@@ -9,6 +9,10 @@ extends XRToolsPickable
 ## quietly un-nocked. Subclasses supply the draw VISUAL (procedural string vs
 ## rigged-pose blend) and the arrow scene they fire.
 
+## After firing, the nock zone is briefly disabled so the just-fired arrow can't
+## re-snap into the nock — which would re-load the bow and leave a phantom arrow.
+const NOCK_RESNAP_LOCKOUT := 0.5
+
 var home_transform: Transform3D
 var _grip_hand: Node3D = null
 var _string_hand: Node3D = null
@@ -97,17 +101,21 @@ func unload_arrow() -> void:
 
 func _on_nock_zone_picked_up(what) -> void:
 	load_arrow()
-	if what is Node:
+	if what is Node3D:
+		_nocked_pickable = what
+		what.visible = false
 		what.set_meta("debug_id", "nocked-pickable")
 		what.add_to_group("debug_tracked")
-		_nocked_pickable = what
 
 
 func _on_nock_zone_dropped() -> void:
 	unload_arrow()
-	if is_instance_valid(_nocked_pickable):
-		_nocked_pickable.remove_from_group("debug_tracked")
+	var p = _nocked_pickable
 	_nocked_pickable = null
+	if is_instance_valid(p):
+		p.visible = true
+		if p.has_meta("debug_id"):
+			p.remove_from_group("debug_tracked")
 
 
 ## A full-draw release with no arrow loaded: distinct sound, no projectile.
@@ -121,6 +129,21 @@ func _fire(ratio: float) -> void:
 	arrow.global_transform = $Spawn.global_transform
 	arrow.fire(BowDraw.arrow_speed(ratio))
 	$ReleaseSound.play()
+	var p = _nocked_pickable
+	_nocked_pickable = null
+	var zone = get_node_or_null("NockZone")
+	if zone != null:
+		zone.enabled = false
+		if zone.has_snapped_object():
+			zone.drop_object()
+		get_tree().create_timer(NOCK_RESNAP_LOCKOUT).timeout.connect(
+			func(): if is_instance_valid(zone): zone.enabled = true)
+	if is_instance_valid(p):
+		p.visible = true
+		if p.has_meta("debug_id"):
+			p.remove_from_group("debug_tracked")
+		if p.has_method("reset_to_home"):
+			p.reset_to_home()
 
 
 ## Overridable: the PackedScene this bow fires. Base returns null.

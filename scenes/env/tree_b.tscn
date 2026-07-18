@@ -1,22 +1,22 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://ptqrps7e21ui"]
 
-[ext_resource type="Script" path="res://scripts/tree_drag.gd" id="1"]
-[ext_resource type="PackedScene" path="res://assets/kaykit_hex/tree_single_B.gltf" id="2"]
+[ext_resource type="Script" uid="uid://cmxysne6kri7f" path="res://scripts/tree_drag.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bmqa6bnkcjddt" path="res://assets/kaykit_hex/tree_single_B.gltf" id="2"]
 
-[node name="TreeB" type="Node3D"]
+[node name="TreeB" type="Node3D" unique_id=845013411]
 script = ExtResource("1")
 trunk_radius = 0.095
 canopy_radius = 0.38
 canopy_bottom_y = 0.08
 canopy_top_y = 1.12
 
-[node name="Visual" parent="." instance=ExtResource("2")]
+[node name="Visual" parent="." unique_id=1054708864 instance=ExtResource("2")]
 
-[node name="Trunk" type="StaticBody3D" parent="."]
+[node name="Trunk" type="StaticBody3D" parent="." unique_id=1964093241]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Trunk"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trunk" unique_id=1411925864]
 
-[node name="Canopy" type="Area3D" parent="."]
+[node name="Canopy" type="Area3D" parent="." unique_id=1302801062]
 collision_mask = 5
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Canopy"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Canopy" unique_id=1523129751]

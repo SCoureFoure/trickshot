@@ -18,10 +18,11 @@ const ARROW_SCENE := preload("res://scenes/oot_arrow.tscn")
 ## shaft axis.
 const NOCK_PULL := 0.497
 
-## The nocked-arrow mesh is origin-centered mid-shaft; its tail sits this far
-## behind its origin (model units at scale 1). Subtracting it puts the tail
-## (fletching) exactly on the string instead of the shaft's midpoint.
-const NOCK_TAIL_OFFSET := 0.368
+## How far back along the shaft axis the string-grab point sits from the nocked
+## arrow's origin. Kept small so the hand grabs ON the arrow (where the player
+## reaches) rather than up the limb — the pull axis has a large +Y component, so
+## a big offset lifts the grab point off the arrow.
+const NOCK_TAIL_OFFSET := 0.05
 
 ## Editor-authored rest transform of the nocked arrow — the source of truth
 ## for where the arrow sits on the riser. Draw slides the arrow back along
@@ -68,7 +69,7 @@ func _update_draw_visual() -> void:
 	# -basis.x points from tip toward tail: the pull-back direction.
 	var back := -_nock_rest.basis.x.normalized()
 	var pull := NOCK_PULL * _draw
-	$NockedArrow.visible = _draw > 0.0 and _loaded
+	$NockedArrow.visible = _loaded
 	$NockedArrow.position = _nock_rest.origin + back * pull
 	# The visible string hand snaps to these grab points, so riding them on
 	# the arrow tail makes the hand track the pull instead of floating at rest.
@@ -83,3 +84,11 @@ func _arrow_scene() -> PackedScene:
 
 func _nock_offset() -> float:
 	return NOCK_PULL * _draw
+
+
+## Adds the string-grab marker's bow-local position to the debug sidecar so the
+## grab point can be measured directly against the nocked arrow.
+func debug_state() -> Dictionary:
+	var d := super.debug_state()
+	d["string_grab"] = $StringGrabLeft.position
+	return d
